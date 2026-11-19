@@ -31,8 +31,9 @@ export const Navbar: React.FC = () => {
         {/* Brand */}
         <div className="flex items-center gap-3">
           <Link href="/" className="flex items-center gap-2.5 group">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#C9A33D] to-[#8A2E22] flex items-center justify-center text-[#17171A] font-black text-xl shadow-lg shadow-[#C9A33D]/20 group-hover:scale-105 transition-transform">
-              🦅
+            <div className="w-10 h-10 rounded-xl overflow-hidden bg-white/5 border border-white/10 p-0.5 flex items-center justify-center shadow-lg shadow-[#C9A33D]/20 group-hover:scale-105 transition-transform shrink-0">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/logo-transparent.webp" alt="Logo Resmi Partai Elang" className="w-full h-full object-contain" />
             </div>
             <div>
               <div className="flex items-center gap-2">

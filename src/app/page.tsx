@@ -46,9 +46,10 @@ export default async function HomePage() {
           </div>
         </div>
 
-        {/* Subtle Watermark */}
-        <div className="absolute right-4 bottom-2 opacity-5 pointer-events-none select-none text-[320px] font-black font-display hidden lg:block">
-          🦅
+        {/* Watermark Logo */}
+        <div className="absolute right-6 bottom-4 opacity-10 pointer-events-none select-none w-72 h-72 hidden lg:block">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/logo-transparent.webp" alt="Partai Elang Watermark" className="w-full h-full object-contain" />
         </div>
       </section>
 

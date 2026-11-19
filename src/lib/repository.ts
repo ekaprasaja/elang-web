@@ -26,7 +26,10 @@ export const ewRepository = {
       console.error('Error fetching sites:', error);
       return [];
     }
-    return data || [];
+    return (data || []).map((s) => ({
+      ...s,
+      logo_url: '/logo-transparent.webp',
+    }));
   },
 
   async getSiteBySlug(slug: string): Promise<Site | null> {
@@ -37,7 +40,10 @@ export const ewRepository = {
       .single();
 
     if (error || !data) return null;
-    return data;
+    return {
+      ...data,
+      logo_url: '/logo-transparent.webp',
+    };
   },
 
   async createSite(siteData: Partial<Site>): Promise<{ success: boolean; site?: Site; error?: string }> {
@@ -112,7 +118,7 @@ export const ewRepository = {
         id: 'default-party-settings',
         party_name: 'Partai Elang Indonesia',
         party_tagline: 'Bersama Rakyat Mewujudkan Kedaulatan, Keadilan, dan Kemakmuran Maritim',
-        logo_url: null,
+        logo_url: '/logo-transparent.webp',
         tentang_partai: 'Partai Elang adalah gerakan politik modern yang berakar pada semangat kedaulatan maritim.',
         visi_partai: 'Terwujudnya Indonesia yang berdaulat secara politik dan adil sosial.',
         misi_partai: ['Keadilan fiskal daerah kepulauan', 'Pemberdayaan nelayan & UMKM'],
@@ -123,7 +129,10 @@ export const ewRepository = {
         },
       };
     }
-    return data;
+    return {
+      ...data,
+      logo_url: '/logo-transparent.webp',
+    };
   },
 
   async updateGlobalSettings(updates: Partial<GlobalPartySettings>): Promise<{ success: boolean }> {

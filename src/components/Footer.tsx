@@ -7,8 +7,11 @@ export const Footer: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8">
         {/* Col 1: Identity */}
         <div className="space-y-3 md:col-span-2">
-          <div className="flex items-center gap-2">
-            <span className="text-2xl">🦅</span>
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-lg overflow-hidden bg-white/5 border border-white/10 p-0.5 flex items-center justify-center shrink-0">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/logo-transparent.webp" alt="Logo Partai Elang" className="w-full h-full object-contain" />
+            </div>
             <span className="font-display font-bold text-white text-base tracking-wide">
               PARTAI ELANG INDONESIA
             </span>

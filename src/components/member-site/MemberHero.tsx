@@ -14,7 +14,8 @@ export const MemberHero: React.FC<MemberHeroProps> = ({ site, profile }) => {
     <section className="relative overflow-hidden bg-[#17171A] text-[#F0ECE2] pt-8 pb-16 md:py-20 border-b border-white/10">
       {/* Background Subtle Gradient & Watermark */}
       <div className="absolute inset-0 pointer-events-none opacity-5 flex items-center justify-center">
-        <span className="text-[400px] font-black select-none font-display">🦅</span>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/logo-transparent.webp" alt="Partai Elang Watermark" className="w-96 h-96 object-contain" />
       </div>
 
       <div className="max-w-7xl mx-auto px-4 relative z-10">
