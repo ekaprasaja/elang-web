@@ -17,16 +17,24 @@ export default async function HomePage() {
         <div className="max-w-3xl space-y-6 relative z-10">
           <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#C9A33D]/20 text-[#C9A33D] border border-[#C9A33D]/30 rounded-full text-xs font-mono font-semibold uppercase">
             <Shield className="w-3.5 h-3.5" />
-            Portal Resmi Fraksi & Kader Partai Elang
+            Partai Elang • Bersama, Kita Bisa!
           </div>
 
           <h1 className="font-display font-black text-3xl sm:text-5xl lg:text-6xl text-white tracking-tight leading-[1.1]">
-            Kedaulatan Maritim & Pengabdian Nyata untuk Rakyat
+            Gerakan Politik Kebangsaan Untuk Indonesia
           </h1>
 
-          <p className="text-sm sm:text-base text-[#F0ECE2]/70 leading-relaxed">
-            Selamat datang di direktori resmi website personal branding anggota dan kader Partai Elang. Telusuri profil, kawal realisasi program kerja, pantau dokumentasi kegiatan lapangan, dan sampaikan aspirasi Anda secara langsung.
+          <p className="text-sm sm:text-base text-[#F0ECE2]/80 leading-relaxed">
+            Partai Elang hadir sebagai wadah perjuangan politik yang berfokus pada semangat nasionalisme, kerakyatan, dan keadilan sosial. Kami berjuang dan bekerja untuk perubahan Indonesia melalui kolaborasi, partisipasi, dan kontribusi nyata.
           </p>
+
+          <div className="flex flex-wrap items-center gap-2 text-xs font-mono text-[#F0ECE2]/60">
+            <span className="px-2 py-0.5 rounded bg-white/5 border border-white/10 text-[#C9A33D]">Fokus: Kaderisasi</span>
+            <span>•</span>
+            <span className="px-2 py-0.5 rounded bg-white/5 border border-white/10">Jangkauan: Nasional</span>
+            <span>•</span>
+            <span className="px-2 py-0.5 rounded bg-white/5 border border-white/10">Karakter: Kolaboratif</span>
+          </div>
 
           <div className="flex flex-wrap items-center gap-3 pt-2">
             <Link

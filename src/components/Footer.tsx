@@ -1,9 +1,10 @@
 import React from 'react';
 import Link from 'next/link';
+import { Phone, Mail, Globe, Shield } from 'lucide-react';
 
 export const Footer: React.FC = () => {
   return (
-    <footer className="border-t border-white/10 bg-[#121214] text-[#F0ECE2]/70 text-xs py-10 mt-20">
+    <footer className="border-t border-white/10 bg-[#121214] text-[#F0ECE2]/70 text-xs py-12 mt-20">
       <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8">
         {/* Col 1: Identity */}
         <div className="space-y-3 md:col-span-2">
@@ -13,18 +14,21 @@ export const Footer: React.FC = () => {
               <img src="/logo-transparent.webp" alt="Logo Partai Elang" className="w-full h-full object-contain" />
             </div>
             <span className="font-display font-bold text-white text-base tracking-wide">
-              PARTAI ELANG INDONESIA
+              PARTAI ELANG
             </span>
           </div>
-          <p className="text-xs text-[#F0ECE2]/60 max-w-md leading-relaxed">
-            Gerakan politik modern berdaulat maritim. Menghadirkan kepemimpinan berintegritas dan memperjuangkan keadilan sosial bagi seluruh masyarakat kepulauan dan pesisir nusantara.
+          <p className="text-xs text-[#F0ECE2]/70 max-w-md leading-relaxed">
+            Gerakan Politik Kebangsaan Untuk Indonesia. Hadir sebagai wadah perjuangan politik yang berfokus pada semangat nasionalisme, kerakyatan, dan keadilan sosial. Kami berjuang dan bekerja untuk perubahan Indonesia.
           </p>
-          <div className="flex items-center gap-3 pt-2">
-            <span className="text-[10px] bg-[#C9A33D]/20 text-[#C9A33D] border border-[#C9A33D]/30 px-2 py-0.5 rounded font-mono">
-              Multi-Tenant CMS v1.0
+          <div className="flex items-center gap-2 pt-2">
+            <span className="text-[10px] bg-[#C9A33D]/20 text-[#C9A33D] border border-[#C9A33D]/30 px-2.5 py-0.5 rounded font-mono font-medium">
+              Fokus: Kaderisasi
             </span>
-            <span className="text-[10px] text-[#F0ECE2]/40">
-              Satu Platform, Ratusan Etalase Kader
+            <span className="text-[10px] bg-white/5 text-[#F0ECE2]/70 border border-white/10 px-2.5 py-0.5 rounded font-mono">
+              Jangkauan: Nasional
+            </span>
+            <span className="text-[10px] bg-white/5 text-[#F0ECE2]/70 border border-white/10 px-2.5 py-0.5 rounded font-mono">
+              Karakter: Kolaboratif
             </span>
           </div>
         </div>
@@ -34,7 +38,7 @@ export const Footer: React.FC = () => {
           <h4 className="font-semibold text-white uppercase text-[11px] tracking-wider text-[#C9A33D]">
             Navigasi Platform
           </h4>
-          <ul className="space-y-1.5 text-xs text-[#F0ECE2]/70">
+          <ul className="space-y-2 text-xs text-[#F0ECE2]/70">
             <li>
               <Link href="/" className="hover:text-white transition-colors">
                 Direktori Anggota / Kader
@@ -46,36 +50,45 @@ export const Footer: React.FC = () => {
               </Link>
             </li>
             <li>
-              <a href="#aspirasi" className="hover:text-white transition-colors">
-                Kirim Aspirasi Masyarakat
+              <a href="https://partaielang.id/about" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors flex items-center gap-1.5">
+                <Globe className="w-3.5 h-3.5 text-[#C9A33D]" />
+                Website Resmi Partai Elang
               </a>
             </li>
           </ul>
         </div>
 
         {/* Col 3: Pusat Informasi */}
-        <div className="space-y-2">
+        <div className="space-y-2.5">
           <h4 className="font-semibold text-white uppercase text-[11px] tracking-wider text-[#C9A33D]">
-            Sekretariat DPP / DPD
+            Kontak & Informasi Resmi
           </h4>
-          <p className="text-[11px] text-[#F0ECE2]/60">
-            Jl. Hang Tuah No. 45, Batam Centre, Kota Batam, Kepulauan Riau
+          <p className="text-[11px] text-[#F0ECE2]/70 flex items-center gap-2">
+            <Phone className="w-3.5 h-3.5 text-[#C9A33D] shrink-0" />
+            <span>Contact Admin: <strong className="text-white font-mono">085 8175 99550</strong></span>
           </p>
-          <p className="text-[11px] text-[#F0ECE2]/60">
-            Email: <span className="text-white">sekretariat@partaielang.id</span>
+          <p className="text-[11px] text-[#F0ECE2]/70 flex items-center gap-2">
+            <Mail className="w-3.5 h-3.5 text-[#C9A33D] shrink-0" />
+            <span>Email: <span className="text-white">kontak@partaielang.id</span></span>
           </p>
-          <p className="text-[11px] text-[#F0ECE2]/60">
-            Call Center: <span className="text-white">0811-7788-9900</span>
+          <p className="text-[11px] text-[#F0ECE2]/70 flex items-center gap-2">
+            <Globe className="w-3.5 h-3.5 text-[#C9A33D] shrink-0" />
+            <span>Website: <a href="https://partaielang.id" target="_blank" rel="noopener noreferrer" className="text-white underline hover:text-[#C9A33D]">partaielang.id</a></span>
+          </p>
+          <p className="text-[10px] text-[#F0ECE2]/50 pt-1 leading-normal">
+            Untuk informasi lebih lanjut mengenai Partai Elang, Anda dapat menghubungi kami melalui website official maupun media sosial resmi.
           </p>
         </div>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 mt-8 pt-6 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-[#F0ECE2]/40">
-        <div>© 2026 Dewan Pimpinan Pusat Partai Elang Indonesia. Hak Cipta Dilindungi.</div>
+        <div>© 2026 Partai Elang. All rights reserved.</div>
         <div className="flex items-center gap-4">
-          <span>Kerahasiaan Data Terjamin</span>
+          <span className="flex items-center gap-1">
+            <Shield className="w-3 h-3 text-[#C9A33D]" /> Bersama, Kita Bisa!
+          </span>
           <span>•</span>
-          <span>Infrastruktur Cloud Vercel & Supabase</span>
+          <span>Infrastruktur Cloud Terintegrasi</span>
         </div>
       </div>
     </footer>

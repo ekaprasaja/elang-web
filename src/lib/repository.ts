@@ -116,16 +116,27 @@ export const ewRepository = {
     if (!data) {
       return {
         id: 'default-party-settings',
-        party_name: 'Partai Elang Indonesia',
-        party_tagline: 'Bersama Rakyat Mewujudkan Kedaulatan, Keadilan, dan Kemakmuran Maritim',
+        party_name: 'Partai Elang',
+        party_tagline: 'Gerakan Politik Kebangsaan Untuk Indonesia',
         logo_url: '/logo-transparent.webp',
-        tentang_partai: 'Partai Elang adalah gerakan politik modern yang berakar pada semangat kedaulatan maritim.',
-        visi_partai: 'Terwujudnya Indonesia yang berdaulat secara politik dan adil sosial.',
-        misi_partai: ['Keadilan fiskal daerah kepulauan', 'Pemberdayaan nelayan & UMKM'],
+        tentang_partai: 'Partai Elang hadir sebagai wadah perjuangan politik yang berfokus pada semangat nasionalisme, kerakyatan, dan keadilan sosial. Kami berjuang dan bekerja untuk perubahan Indonesia. Dan setiap kader kami adalah patriot-patriot bangsa yang selalu siap menyingsingkan lengan baju untuk mewujudkan cita-cita para pendiri Bangsa dan Negara Kesatuan Republik Indonesia.',
+        visi_partai: 'Terwujudnya Cita-cita Perubahan Indonesia. Arah perjuangan kami dibangun di atas konstitusi, nilai kebangsaan, dan komitmen untuk menghadirkan dampak yang bisa dirasakan langsung oleh rakyat.',
+        misi_partai: [
+          'Terwujudnya cita-cita nasional bangsa Indonesia sebagaimana dimaksud dalam Pembukaan Undang-Undang Dasar Negara Republik Indonesia Tahun 1945.',
+          'Terwujudnya masyarakat demokratis yang adil dan sejahtera serta berkeyakinan pada Tuhan Yang Maha Esa, mencintai tanah air dan bangsa dalam bingkai Negara Kesatuan Republik Indonesia.',
+          'Mewujudkan masyarakat kedaulatan rakyat dalam berdemokrasi, yang menjunjung tinggi nilai-nilai kebenaran dan hukum yang berlaku.',
+          'Mewujudkan ekonomi kerakyatan yang berkeadilan.',
+        ],
         pusat_kontak: {
-          alamat: 'Batam Centre, Kepulauan Riau',
-          email: 'sekretariat@partaielang.id',
-          telepon: '0778-456789',
+          alamat: 'Kantor Dewan Pimpinan Pusat Partai Elang',
+          email: 'kontak@partaielang.id',
+          telepon: '085 8175 99550',
+          admin_contact: '085 8175 99550',
+          website: 'https://partaielang.id',
+          fokus_kerja: 'Kaderisasi',
+          jangkauan: 'Nasional',
+          karakter_gerakan: 'Kolaboratif',
+          slogan: 'Bersama, Kita Bisa!',
         },
       };
     }

@@ -63,7 +63,7 @@ export function generateContentWithGuardrails(params: GenerateContentParams): Ge
     // Closing statement reflecting party alignment
     const emphasis = settings.penekanan_isu.join(', ');
     paragraphs.push(
-      `"Amanah pengabdian di Partai Elang adalah bekerja dengan hati dan bukti nyata. Segala poin masukan yang disampaikan hari ini bukan sekadar dicatat, melainkan menjadi prioritas perjuangan kami di tingkat kebijakan, khususnya terkait ${emphasis}," pungkas ${memberName}.`
+      `"Amanah pengabdian di Partai Elang adalah bekerja dengan hati, memperkokoh nasionalisme, dan menghadirkan dampak nyata yang dirasakan langsung oleh rakyat. Selaras dengan visi perubahan dan komitmen 'Bersama, Kita Bisa!', aspirasi warga terkait ${emphasis} menjadi prioritas aksi nyata kami," pungkas ${memberName}.`
     );
 
     return {
@@ -74,22 +74,22 @@ export function generateContentWithGuardrails(params: GenerateContentParams): Ge
     const title = `Dokumentasi: ${category} - ${date}`;
     const body = `${verbVisit} warga dalam rangka ${category}.\n\nRingkasan kegiatan:\n${lines
       .map((l) => `✔️ ${l}`)
-      .join('\n')}\n\nBersama Partai Elang, kita rawat harapan dan perjuangkan kedaulatan masyarakat pesisir! 🦅\n\n#PartaiElang #KerjaNyata #${memberName.replace(/[^a-zA-Z]/g, '')}`;
+      .join('\n')}\n\nBersama Partai Elang, kita satukan semangat untuk perubahan dan keadilan sosial bagi seluruh rakyat! Bersama, Kita Bisa! 🦅\n\n#PartaiElang #GerakanPolitikKebangsaan #BersamaKitaBisa #UntukIndonesia #${memberName.replace(/[^a-zA-Z]/g, '')}`;
 
     return { title, body };
   } else if (contentType === 'progress') {
     const title = `Laporan Progres Kerja: ${category}`;
     const body = `Per ${date}, pemantauan lapangan terhadap program kerja "${category}" mencatat capaian dan langkah konkret sebagai berikut:\n\n${lines
       .map((l, i) => `${i + 1}. ${l}`)
-      .join('\n')}\n\nEvaluasi berkala terus dilakukan untuk memastikan setiap realisasi program memberikan dampak optimal bagi kesejahteraan masyarakat penerima manfaat.`;
+      .join('\n')}\n\nEvaluasi berkala terus dilakukan untuk memastikan setiap realisasi program selaras dengan misi mewujudkan ekonomi kerakyatan yang berkeadilan dan kesejahteraan masyarakat.`;
 
     return { title, body };
   } else {
     // Bio
     const title = `Biografi Ringkas: ${memberName}`;
-    const body = `${memberName} adalah figur pengabdi yang mendedikasikan kiprahnya untuk kemajuan dan kedaulatan masyarakat Kepulauan Riau melalui Partai Elang.\n\nRiwayat dan rekam jejak perjuangan beliau berakar pada komitmen melayani rakyat di bidang ${settings.penekanan_isu.join(
+    const body = `${memberName} adalah kader patriot bangsa yang mendedikasikan kiprahnya untuk kemajuan rakyat melalui Partai Elang (Gerakan Politik Kebangsaan Untuk Indonesia).\n\nRiwayat dan rekam jejak perjuangan beliau berakar pada komitmen melayani rakyat di bidang ${settings.penekanan_isu.join(
       ', '
-    )}. Dengan semangat integritas tinggi dan kepedulian maritim yang mendalam, beliau senantiasa hadir memperjuangkan aspirasi warga hingga ke pulau-pulau terdepan.`;
+    )}. Dengan semangat nasionalisme, kerakyatan, dan keadilan sosial, beliau siap menyingsingkan lengan baju menghadirkan solusi nyata demi terwujudnya cita-cita perubahan Indonesia.`;
 
     return { title, body };
   }
