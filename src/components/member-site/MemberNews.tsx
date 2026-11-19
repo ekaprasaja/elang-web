@@ -35,90 +35,202 @@ export const MemberNewsSection: React.FC<MemberNewsProps> = ({ news, memberName 
           </span>
         </div>
 
-        {/* Asymmetrical Grid: 1 Big Main Article (7 cols) + Side Articles (5 cols) */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          {/* Main Large Article */}
+        {/* Dynamic Responsive Layout Based on Article Count */}
+        {news.length === 1 ? (
+          /* Single Article: Full 12-col Expansive Horizontal Showcase */
           <div
             onClick={() => setSelectedNews(mainPost)}
-            className="lg:col-span-7 bg-[#17171A] rounded-2xl border border-white/10 overflow-hidden group cursor-pointer hover:border-[#C9A33D]/60 transition-all shadow-xl"
+            className="w-full bg-[#17171A] rounded-3xl border border-white/10 overflow-hidden group cursor-pointer hover:border-[#C9A33D]/60 transition-all shadow-2xl grid grid-cols-1 lg:grid-cols-12 items-stretch"
           >
-            <div className="relative h-64 sm:h-80 w-full overflow-hidden">
+            <div className="lg:col-span-7 relative min-h-[300px] sm:min-h-[380px] w-full overflow-hidden bg-black/30">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={mainPost.cover_image_url || '/images/articles/aspirasi-pesisir.webp'}
                 alt={mainPost.judul}
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
               />
-              <span className="absolute top-4 left-4 bg-[#8A2E22] text-white text-[10px] font-mono font-bold uppercase px-3 py-1 rounded shadow">
+              <span className="absolute top-4 left-4 bg-[#8A2E22] text-white text-[11px] font-mono font-bold uppercase px-3.5 py-1.5 rounded-lg shadow-xl tracking-wider">
                 {mainPost.kategori}
               </span>
             </div>
-            <div className="p-6 space-y-3">
-              <div className="flex items-center gap-4 text-[11px] text-[#F0ECE2]/50 font-mono">
-                <span className="flex items-center gap-1">
-                  <Calendar className="w-3.5 h-3.5 text-[#C9A33D]" />
-                  {new Date(mainPost.tanggal_publish).toLocaleDateString('id-ID', {
-                    day: 'numeric',
-                    month: 'long',
-                    year: 'numeric',
-                  })}
-                </span>
-                <span className="flex items-center gap-1">
-                  <Eye className="w-3.5 h-3.5 text-[#C9A33D]" />
-                  {mainPost.views_count} pembaca
-                </span>
+            <div className="lg:col-span-5 p-6 sm:p-10 flex flex-col justify-between space-y-6 bg-gradient-to-br from-[#1E1E24] to-[#17171A]">
+              <div className="space-y-4">
+                <div className="flex items-center gap-4 text-xs text-[#F0ECE2]/50 font-mono">
+                  <span className="flex items-center gap-1.5">
+                    <Calendar className="w-3.5 h-3.5 text-[#C9A33D]" />
+                    {new Date(mainPost.tanggal_publish).toLocaleDateString('id-ID', {
+                      day: 'numeric',
+                      month: 'long',
+                      year: 'numeric',
+                    })}
+                  </span>
+                  <span className="flex items-center gap-1.5">
+                    <Eye className="w-3.5 h-3.5 text-[#C9A33D]" />
+                    {mainPost.views_count} pembaca
+                  </span>
+                </div>
+
+                <h3 className="font-display font-black text-xl sm:text-2xl text-white group-hover:text-[#C9A33D] transition-colors leading-snug">
+                  {mainPost.judul}
+                </h3>
+
+                <p className="text-xs sm:text-sm text-[#F0ECE2]/70 line-clamp-4 leading-relaxed">
+                  {mainPost.ringkasan || mainPost.isi.slice(0, 220) + '...'}
+                </p>
               </div>
 
-              <h3 className="font-display font-black text-xl sm:text-2xl text-white group-hover:text-[#C9A33D] transition-colors leading-snug">
-                {mainPost.judul}
-              </h3>
-
-              <p className="text-xs sm:text-sm text-[#F0ECE2]/70 line-clamp-3 leading-relaxed">
-                {mainPost.ringkasan || mainPost.isi.slice(0, 180) + '...'}
-              </p>
-
-              <div className="pt-2 flex items-center gap-1.5 text-xs font-bold text-[#C9A33D] group-hover:underline">
-                <span>Baca Selengkapnya</span>
-                <ArrowRight className="w-3.5 h-3.5" />
+              <div className="pt-4 border-t border-white/10 flex items-center justify-between">
+                <span className="text-xs font-bold text-[#C9A33D] flex items-center gap-1.5 group-hover:translate-x-1 transition-transform">
+                  Baca Rilis Lengkap <ArrowRight className="w-4 h-4" />
+                </span>
+                <span className="text-[10px] font-mono text-[#F0ECE2]/40 bg-white/5 px-2.5 py-1 rounded-full border border-white/5">
+                  Publikasi Terverifikasi
+                </span>
               </div>
             </div>
           </div>
-
-          {/* Side Articles Stack */}
-          <div className="lg:col-span-5 space-y-4">
-            {sidePosts.map((post) => (
+        ) : news.length === 2 ? (
+          /* Two Articles: Balanced 2-Column Grid (6 cols + 6 cols) */
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
+            {news.map((item) => (
               <div
-                key={post.id}
-                onClick={() => setSelectedNews(post)}
-                className="bg-[#17171A] p-4 rounded-xl border border-white/10 hover:border-[#C9A33D]/50 transition-colors cursor-pointer flex gap-4 group"
+                key={item.id}
+                onClick={() => setSelectedNews(item)}
+                className="bg-[#17171A] rounded-2xl border border-white/10 overflow-hidden group cursor-pointer hover:border-[#C9A33D]/60 transition-all shadow-xl flex flex-col justify-between"
               >
-                <div className="w-24 h-24 rounded-lg overflow-hidden shrink-0 bg-white/5">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={post.cover_image_url || '/images/articles/aspirasi-pesisir.webp'}
-                    alt={post.judul}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform"
-                  />
+                <div>
+                  <div className="relative h-60 sm:h-72 w-full overflow-hidden bg-black/30">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={item.cover_image_url || '/images/articles/aspirasi-pesisir.webp'}
+                      alt={item.judul}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                    <span className="absolute top-4 left-4 bg-[#8A2E22] text-white text-[10px] font-mono font-bold uppercase px-3 py-1 rounded shadow">
+                      {item.kategori}
+                    </span>
+                  </div>
+                  <div className="p-6 space-y-3">
+                    <div className="flex items-center gap-4 text-[11px] text-[#F0ECE2]/50 font-mono">
+                      <span className="flex items-center gap-1">
+                        <Calendar className="w-3.5 h-3.5 text-[#C9A33D]" />
+                        {new Date(item.tanggal_publish).toLocaleDateString('id-ID', {
+                          day: 'numeric',
+                          month: 'long',
+                          year: 'numeric',
+                        })}
+                      </span>
+                      <span className="flex items-center gap-1">
+                        <Eye className="w-3.5 h-3.5 text-[#C9A33D]" />
+                        {item.views_count} pembaca
+                      </span>
+                    </div>
+
+                    <h3 className="font-display font-black text-lg sm:text-xl text-white group-hover:text-[#C9A33D] transition-colors leading-snug">
+                      {item.judul}
+                    </h3>
+
+                    <p className="text-xs sm:text-sm text-[#F0ECE2]/70 line-clamp-3 leading-relaxed">
+                      {item.ringkasan || item.isi.slice(0, 160) + '...'}
+                    </p>
+                  </div>
                 </div>
-                <div className="space-y-1.5 flex-1 min-w-0">
-                  <span className="text-[10px] font-mono text-[#C9A33D] uppercase">
-                    {post.kategori}
-                  </span>
-                  <h4 className="font-display font-bold text-xs sm:text-sm text-white group-hover:text-[#C9A33D] transition-colors line-clamp-2 leading-snug">
-                    {post.judul}
-                  </h4>
-                  <div className="text-[10px] text-[#F0ECE2]/40 font-mono">
-                    {new Date(post.tanggal_publish).toLocaleDateString('id-ID', {
-                      day: 'numeric',
-                      month: 'short',
-                      year: 'numeric',
-                    })}
+
+                <div className="px-6 pb-6 pt-2">
+                  <div className="flex items-center gap-1.5 text-xs font-bold text-[#C9A33D] group-hover:underline">
+                    <span>Baca Selengkapnya</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
                   </div>
                 </div>
               </div>
             ))}
           </div>
-        </div>
+        ) : (
+          /* Three or More Articles: Asymmetrical 7 / 5 Grid */
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            {/* Main Large Article */}
+            <div
+              onClick={() => setSelectedNews(mainPost)}
+              className="lg:col-span-7 bg-[#17171A] rounded-2xl border border-white/10 overflow-hidden group cursor-pointer hover:border-[#C9A33D]/60 transition-all shadow-xl"
+            >
+              <div className="relative h-64 sm:h-80 w-full overflow-hidden">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={mainPost.cover_image_url || '/images/articles/aspirasi-pesisir.webp'}
+                  alt={mainPost.judul}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+                <span className="absolute top-4 left-4 bg-[#8A2E22] text-white text-[10px] font-mono font-bold uppercase px-3 py-1 rounded shadow">
+                  {mainPost.kategori}
+                </span>
+              </div>
+              <div className="p-6 space-y-3">
+                <div className="flex items-center gap-4 text-[11px] text-[#F0ECE2]/50 font-mono">
+                  <span className="flex items-center gap-1">
+                    <Calendar className="w-3.5 h-3.5 text-[#C9A33D]" />
+                    {new Date(mainPost.tanggal_publish).toLocaleDateString('id-ID', {
+                      day: 'numeric',
+                      month: 'long',
+                      year: 'numeric',
+                    })}
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <Eye className="w-3.5 h-3.5 text-[#C9A33D]" />
+                    {mainPost.views_count} pembaca
+                  </span>
+                </div>
+
+                <h3 className="font-display font-black text-xl sm:text-2xl text-white group-hover:text-[#C9A33D] transition-colors leading-snug">
+                  {mainPost.judul}
+                </h3>
+
+                <p className="text-xs sm:text-sm text-[#F0ECE2]/70 line-clamp-3 leading-relaxed">
+                  {mainPost.ringkasan || mainPost.isi.slice(0, 180) + '...'}
+                </p>
+
+                <div className="pt-2 flex items-center gap-1.5 text-xs font-bold text-[#C9A33D] group-hover:underline">
+                  <span>Baca Selengkapnya</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </div>
+              </div>
+            </div>
+
+            {/* Side Articles Stack */}
+            <div className="lg:col-span-5 space-y-4">
+              {sidePosts.map((post) => (
+                <div
+                  key={post.id}
+                  onClick={() => setSelectedNews(post)}
+                  className="bg-[#17171A] p-4 rounded-xl border border-white/10 hover:border-[#C9A33D]/50 transition-colors cursor-pointer flex gap-4 group"
+                >
+                  <div className="w-24 h-24 rounded-lg overflow-hidden shrink-0 bg-white/5">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={post.cover_image_url || '/images/articles/aspirasi-pesisir.webp'}
+                      alt={post.judul}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                    />
+                  </div>
+                  <div className="space-y-1.5 flex-1 min-w-0">
+                    <span className="text-[10px] font-mono text-[#C9A33D] uppercase">
+                      {post.kategori}
+                    </span>
+                    <h4 className="font-display font-bold text-xs sm:text-sm text-white group-hover:text-[#C9A33D] transition-colors line-clamp-2 leading-snug">
+                      {post.judul}
+                    </h4>
+                    <div className="text-[10px] text-[#F0ECE2]/40 font-mono">
+                      {new Date(post.tanggal_publish).toLocaleDateString('id-ID', {
+                        day: 'numeric',
+                        month: 'short',
+                        year: 'numeric',
+                      })}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Article Detail Reader Modal */}
