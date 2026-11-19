@@ -9,7 +9,7 @@ Platform web modern berbasis Next.js 15+ dan Supabase PostgreSQL yang memungkink
 1. **Arsitektur Multi-Tenant Terpusat:**
    - Satu basis kode dan satu basis data melayani banyak situs kader.
    - Akses tenant via:
-     - Path-based: `/meireza-endipat-wijaya`, `/suryani-lestari`, `/dr-ahmad-fauzi`
+     - Path-based: `/arya-pratama`, `/dewi-anggraini`, `/dr-budi-santoso`
      - Subdomain wildcard: `namaanggota.partaielang.id`
      - Custom domain pribadi (pemetaan CNAME).
    - Penambahan situs kader baru berlangsung instan (< 1 menit) tanpa proses deploy ulang kode.
