@@ -36,27 +36,46 @@ export function generateContentWithGuardrails(params: GenerateContentParams): Ge
   }
 
   if (contentType === 'berita') {
-    const title = lines.length > 0 && lines[0].length < 80
-      ? `${lines[0]} — Komitmen Nyata ${memberName}`
-      : `Serap Aspirasi di ${category}: ${memberName} Tegaskan Solusi Nyata untuk Rakyat`;
+    const isPublicIssue = category.toLowerCase().includes('isu') || category.toLowerCase().includes('sikap') || category.toLowerCase().includes('sentimen');
+    
+    let title = '';
+    if (isPublicIssue) {
+      title = lines.length > 0 && lines[0].length < 75
+        ? `Sikap Resmi Partai Elang: ${lines[0]}`
+        : `Merespons Dinamika Publik: ${memberName} Tegaskan Keberpihakan pada Rakyat`;
+    } else {
+      title = lines.length > 0 && lines[0].length < 80
+        ? `${lines[0]} — Komitmen Nyata ${memberName}`
+        : `Serap Aspirasi di ${category}: ${memberName} Tegaskan Solusi Nyata untuk Rakyat`;
+    }
 
     const paragraphs: string[] = [];
 
     // Lead paragraph
-    paragraphs.push(
-      `KEPULAUAN RIAU — Melanjutkan agenda kerja kemasyarakatan yang konsisten, ${verbVisit} warga dalam agenda "${category}" pada ${date}. Kegiatan ini diselenggarakan guna mendengarkan secara langsung denyut persoalan riil yang dihadapi masyarakat di akar rumput.`
-    );
+    if (isPublicIssue) {
+      paragraphs.push(
+        `JAKARTA / DAERAH PEMILIHAN — Merespons dinamika perbincangan publik dan temuan radar sentimen media listening, kader penggerak Partai Elang, ${memberName}, menyampaikan pandangan dan sikap politik resmi per ${date}. Langkah ini merupakan wujud responsivitas partai dalam mengawal aspirasi masyarakat agar mendapat perhatian konkret dari pemangku kebijakan.`
+      );
+    } else {
+      paragraphs.push(
+        `DAERAH PEMILIHAN — Melanjutkan agenda kerja kemasyarakatan yang konsisten, ${verbVisit} warga dalam agenda "${category}" pada ${date}. Kegiatan ini diselenggarakan guna mendengarkan secara langsung denyut persoalan riil yang dihadapi masyarakat di akar rumput.`
+      );
+    }
 
     // Body elaboration strictly from points without hallucinations
     if (lines.length > 1) {
       paragraphs.push(
-        `Dalam pertemuan tersebut, beberapa catatan utama dan aspirasi warga yang mengemuka antara lain:\n\n${lines
-          .map((line, idx) => `• ${line}`)
-          .join('\n')}`
+        isPublicIssue
+          ? `Adapun poin-poin pokok sikap dan argumentasi kebijakan yang ditekankan antara lain:\n\n${lines
+              .map((line, idx) => `• ${line}`)
+              .join('\n')}`
+          : `Dalam pertemuan tersebut, beberapa catatan utama dan aspirasi warga yang mengemuka antara lain:\n\n${lines
+              .map((line, idx) => `• ${line}`)
+              .join('\n')}`
       );
     } else {
       paragraphs.push(
-        `Fokus utama dalam pertemuan ini terpusat pada ${firstPoint}. Masyarakat menyambut antusias kehadiran perwakilan yang bersedia hadir langsung di tengah-tengah lingkungan mereka tanpa sekat formalitas.`
+        `Fokus utama dalam pembahasan ini terpusat pada ${firstPoint}. Sikap tegas dan solutif ini diharapkan mampu mengurai kebuntuan serta memberikan rasa keadilan bagi masyarakat terdampak.`
       );
     }
 

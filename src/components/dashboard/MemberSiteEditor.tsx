@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Site, MemberProfile, ProgramKerja, NewsPost, Aspirasi, ContentJob } from '@/types';
+import { Site, MemberProfile, ProgramKerja, NewsPost, Aspirasi, ContentJob, SentimentIssue } from '@/types';
 import {
   Sparkles,
   ExternalLink,
@@ -17,6 +17,13 @@ import {
   MessageSquare,
   User,
   ArrowRight,
+  Flame,
+  TrendingUp,
+  Radio,
+  AlertTriangle,
+  Lightbulb,
+  RefreshCw,
+  BarChart2,
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
@@ -39,11 +46,48 @@ export const MemberSiteEditor: React.FC<MemberSiteEditorProps> = ({ slug }) => {
   const [aiError, setAiError] = useState<string | null>(null);
   const [jobs, setJobs] = useState<ContentJob[]>([]);
 
+  // Elang Sentimen Intelligence state
+  const [sentimentIssues, setSentimentIssues] = useState<SentimentIssue[]>([]);
+  const [selectedIssueId, setSelectedIssueId] = useState<string | null>(null);
+  const [loadingIssues, setLoadingIssues] = useState(false);
+  const [issueNotice, setIssueNotice] = useState<string | null>(null);
+
   // Profile Edit state
   const [bio, setBio] = useState('');
   const [visi, setVisi] = useState('');
   const [wa, setWa] = useState('');
   const [profileSaved, setProfileSaved] = useState(false);
+
+  const fetchSentimentIssues = async () => {
+    setLoadingIssues(true);
+    try {
+      const res = await fetch('/api/sentiment/issues');
+      const data = await res.json();
+      if (data.issues) {
+        setSentimentIssues(data.issues);
+      }
+    } catch (e) {
+      console.error('Gagal mengambil data Elang Sentimen:', e);
+    } finally {
+      setLoadingIssues(false);
+    }
+  };
+
+  const handleSelectIssue = (issue: SentimentIssue) => {
+    setSelectedIssueId(issue.id);
+    setRawCategory('Pernyataan Sikap Isu Publik');
+    setRawPoints(issue.suggested_points.join('\n'));
+    setContentType('berita');
+    setIssueNotice(
+      `Isu "${issue.topic}" berhasil dimuat ke formulir! Poin sikap resmi terisi otomatis, silakan sesuaikan atau langsung tekan 'Hasilkan Draf AI'.`
+    );
+    setTimeout(() => setIssueNotice(null), 8000);
+
+    const formEl = document.getElementById('ai-input-form');
+    if (formEl) {
+      formEl.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
   const fetchSite = async () => {
     setLoading(true);
@@ -65,6 +109,7 @@ export const MemberSiteEditor: React.FC<MemberSiteEditorProps> = ({ slug }) => {
 
   useEffect(() => {
     fetchSite();
+    fetchSentimentIssues();
   }, [slug]);
 
   const handleGenerateAI = async (e: React.FormEvent) => {
@@ -232,47 +277,168 @@ export const MemberSiteEditor: React.FC<MemberSiteEditorProps> = ({ slug }) => {
 
       {/* TAB 1: AI Generator Pipeline */}
       {activeTab === 'ai_generator' && (
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          {/* Left Form (Raw Points): 6 cols */}
-          <div className="lg:col-span-6 bg-[#1E1E24] p-6 rounded-2xl border border-white/10 space-y-5 shadow-xl">
-            <div className="space-y-1">
-              <span className="text-[10px] font-mono text-[#C9A33D] uppercase tracking-wider flex items-center gap-1">
-                <Sparkles className="w-3.5 h-3.5" />
-                Input Bahan Mentah (Tanpa Perlu Tulis Rapi)
-              </span>
-              <h3 className="font-display font-black text-xl text-white">
-                Apa Kegiatan / Agenda Anda Hari Ini?
-              </h3>
-              <p className="text-xs text-[#F0ECE2]/60">
-                Cukup ketik poin-poin singkat kegiatan Anda di lapangan. Mesin AI Partai Elang akan menyusunnya menjadi narasi berita atau rilis resmi siap terbit.
-              </p>
+        <div className="space-y-8">
+          {/* Section: Radar Isu Hangat dari Elang Sentimen */}
+          <div className="bg-[#1E1E24] p-6 rounded-3xl border border-[#C9A33D]/30 space-y-5 shadow-2xl relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-[#C9A33D]/10 via-transparent to-transparent pointer-events-none rounded-full blur-3xl"></div>
+
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 relative z-10">
+              <div className="space-y-1">
+                <div className="inline-flex items-center gap-2 px-3 py-1 bg-amber-500/10 text-amber-400 border border-amber-500/30 rounded-full text-[11px] font-mono font-semibold uppercase">
+                  <Flame className="w-3.5 h-3.5 text-amber-400 animate-pulse" />
+                  Radar Intelijen Elang Sentimen • Media Listening
+                </div>
+                <h3 className="font-display font-black text-xl sm:text-2xl text-white">
+                  Isu-Isu Hangat Publik Terkini
+                </h3>
+                <p className="text-xs text-[#F0ECE2]/70 max-w-2xl leading-relaxed">
+                  Isu-isu di bawah ini terdeteksi langsung oleh sistem <strong>Elang Sentimen</strong> dari analisis media berita dan percakapan publik. Klik tombol <strong>&quot;Gunakan Isu Ini&quot;</strong> untuk otomatis mengisi bahan artikel kader, agar materi website Anda selalu relevan dan aktual.
+                </p>
+              </div>
+
+              <button
+                type="button"
+                onClick={fetchSentimentIssues}
+                disabled={loadingIssues}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-[#F0ECE2]/80 text-xs border border-white/10 transition self-start sm:self-auto shrink-0"
+              >
+                <RefreshCw className={`w-3.5 h-3.5 ${loadingIssues ? 'animate-spin' : ''}`} />
+                <span>Segarkan Isu</span>
+              </button>
             </div>
 
-            {aiError && (
-              <div className="p-3 bg-red-950/80 border border-red-500/40 rounded-xl text-xs text-red-300">
-                {aiError}
+            {issueNotice && (
+              <div className="p-3.5 bg-emerald-950/80 border border-emerald-500/50 rounded-xl text-xs text-emerald-300 flex items-center gap-2.5 animate-fade-in relative z-10 shadow-lg">
+                <CheckCircle className="w-4 h-4 text-emerald-400 shrink-0" />
+                <span>{issueNotice}</span>
               </div>
             )}
 
-            <form onSubmit={handleGenerateAI} className="space-y-4">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="space-y-1.5">
-                  <label className="text-xs font-semibold text-white">Kategori Kegiatan</label>
-                  <select
-                    value={rawCategory}
-                    onChange={(e) => setRawCategory(e.target.value)}
-                    className="w-full bg-[#17171A] border border-white/15 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-[#C9A33D]"
-                  >
-                    <option value="Kegiatan Lapangan & Sosialisasi">Kegiatan Lapangan & Sosialisasi</option>
-                    <option value="Bakti Sosial & Sembako">Bakti Sosial & Sembako</option>
-                    <option value="Dialog Nelayan & Pesisir">Dialog Nelayan & Pesisir</option>
-                    <option value="Advokasi Kebijakan & Rapat">Advokasi Kebijakan & Rapat</option>
-                  </select>
+            {/* Grid of Sentiment Issues */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 relative z-10">
+              {sentimentIssues.length === 0 ? (
+                <div className="col-span-full py-8 text-center text-xs text-[#F0ECE2]/50">
+                  {loadingIssues ? 'Menghubungkan ke Elang Sentimen...' : 'Memuat isu-isu hangat terkini...'}
                 </div>
+              ) : (
+                sentimentIssues.slice(0, 6).map((issue) => {
+                  const isSelected = selectedIssueId === issue.id;
+                  const isNegative = issue.dominant_sentiment === 'negatif';
+                  const isPositive = issue.dominant_sentiment === 'positif';
 
-                <div className="space-y-1.5">
-                  <label className="text-xs font-semibold text-white">Tanggal Kegiatan</label>
-                  <input
+                  return (
+                    <div
+                      key={issue.id}
+                      className={`p-4 rounded-2xl border transition-all flex flex-col justify-between space-y-3 ${
+                        isSelected
+                          ? 'bg-[#26262E] border-[#C9A33D] shadow-lg shadow-[#C9A33D]/10 ring-1 ring-[#C9A33D]'
+                          : 'bg-[#17171A]/90 border-white/10 hover:border-white/20 hover:bg-[#1A1A1E]'
+                      }`}
+                    >
+                      <div className="space-y-2">
+                        {/* Badges */}
+                        <div className="flex items-center justify-between gap-2 text-[10px] font-mono">
+                          <span
+                            className={`px-2 py-0.5 rounded-md border font-medium ${
+                              isNegative
+                                ? 'bg-rose-500/10 text-rose-400 border-rose-500/30'
+                                : isPositive
+                                ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30'
+                                : 'bg-amber-500/10 text-amber-400 border-amber-500/30'
+                            }`}
+                          >
+                            {isNegative
+                              ? 'Sentimen Kritis'
+                              : isPositive
+                              ? 'Sentimen Positif'
+                              : 'Sentimen Beragam'}
+                          </span>
+                          <span className="text-[#C9A33D] bg-[#C9A33D]/10 px-2 py-0.5 rounded-md border border-[#C9A33D]/20 font-semibold">
+                            🔥 {issue.burst_ratio}x Burst
+                          </span>
+                        </div>
+
+                        {/* Title */}
+                        <h4 className="font-display font-bold text-sm text-white line-clamp-2 leading-snug">
+                          {issue.topic}
+                        </h4>
+
+                        {/* Summary */}
+                        <p className="text-[11px] text-[#F0ECE2]/70 line-clamp-3 leading-relaxed">
+                          {issue.summary}
+                        </p>
+                      </div>
+
+                      {/* Footer Actions */}
+                      <div className="pt-2 border-t border-white/5 space-y-2">
+                        <div className="flex items-center justify-between text-[10px] text-[#F0ECE2]/50 font-mono">
+                          <span>{issue.mention_count} percakapan</span>
+                          <span>Wilayah: {issue.region}</span>
+                        </div>
+
+                        <button
+                          type="button"
+                          onClick={() => handleSelectIssue(issue)}
+                          className={`w-full py-2 px-3 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-md ${
+                            isSelected
+                              ? 'bg-emerald-500 text-slate-950 shadow-emerald-500/20'
+                              : 'bg-[#C9A33D] hover:bg-amber-500 text-[#17171A] shadow-[#C9A33D]/20'
+                          }`}
+                        >
+                          <Sparkles className="w-3.5 h-3.5" />
+                          <span>{isSelected ? '✓ Isu Aktif di Formulir' : '⚡ Gunakan Isu Ini'}</span>
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })
+              )}
+            </div>
+          </div>
+
+          {/* Form & Output Generator Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            {/* Left Form (Raw Points): 6 cols */}
+            <div className="lg:col-span-6 bg-[#1E1E24] p-6 rounded-2xl border border-white/10 space-y-5 shadow-xl">
+              <div className="space-y-1">
+                <span className="text-[10px] font-mono text-[#C9A33D] uppercase tracking-wider flex items-center gap-1">
+                  <Sparkles className="w-3.5 h-3.5" />
+                  Studio Redaksi & AI Writing
+                </span>
+                <h3 className="font-display font-black text-xl text-white">
+                  Formulir Materi & Sikap Kader
+                </h3>
+                <p className="text-xs text-[#F0ECE2]/60">
+                  Poin kegiatan atau isu yang dipilih akan otomatis disusun menjadi rilis resmi, opini fraksi, atau caption medsos berbobot.
+                </p>
+              </div>
+
+              {aiError && (
+                <div className="p-3 bg-red-950/80 border border-red-500/40 rounded-xl text-xs text-red-300">
+                  {aiError}
+                </div>
+              )}
+
+              <form id="ai-input-form" onSubmit={handleGenerateAI} className="space-y-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-semibold text-white">Kategori Tulisan</label>
+                    <select
+                      value={rawCategory}
+                      onChange={(e) => setRawCategory(e.target.value)}
+                      className="w-full bg-[#17171A] border border-white/15 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-[#C9A33D]"
+                    >
+                      <option value="Pernyataan Sikap Isu Publik">Pernyataan Sikap Isu Publik (Elang Sentimen)</option>
+                      <option value="Kegiatan Lapangan & Sosialisasi">Kegiatan Lapangan & Sosialisasi</option>
+                      <option value="Bakti Sosial & Sembako">Bakti Sosial & Sembako</option>
+                      <option value="Dialog Nelayan & Pesisir">Dialog Nelayan & Pesisir</option>
+                      <option value="Advokasi Kebijakan & Rapat">Advokasi Kebijakan & Rapat</option>
+                    </select>
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-semibold text-white">Tanggal Publikasi</label>
+                    <input
                     type="date"
                     value={rawDate}
                     onChange={(e) => setRawDate(e.target.value)}
@@ -401,7 +567,8 @@ export const MemberSiteEditor: React.FC<MemberSiteEditorProps> = ({ slug }) => {
             )}
           </div>
         </div>
-      )}
+      </div>
+    )}
 
       {/* TAB 2: Berita */}
       {activeTab === 'berita' && (

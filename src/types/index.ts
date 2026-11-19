@@ -169,6 +169,21 @@ export interface PublishSchedule {
   is_active: boolean;
 }
 
+export interface SentimentIssue {
+  id: string;
+  topic: string;
+  region: string;
+  date: string;
+  mention_count: number;
+  burst_ratio: number;
+  dominant_sentiment: 'positif' | 'negatif' | 'netral';
+  sentiment_score: number;
+  summary: string;
+  recommended_angle: string;
+  suggested_points: string[];
+  sample_headlines: string[];
+}
+
 export interface MemberSiteData {
   site: Site;
   profile?: MemberProfile;

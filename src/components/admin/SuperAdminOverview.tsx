@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Site, Aspirasi, GlobalPartySettings, AIWritingSettings } from '@/types';
+import { Site, Aspirasi, GlobalPartySettings, AIWritingSettings, SentimentIssue } from '@/types';
 import { SiteWizardModal } from './SiteWizardModal';
 import {
   Globe,
@@ -17,13 +17,20 @@ import {
   CheckCircle,
   AlertCircle,
   FileText,
+  Flame,
+  TrendingUp,
+  RefreshCw,
+  Copy,
+  Radio,
 } from 'lucide-react';
 
 export const SuperAdminOverview: React.FC = () => {
   const [stats, setStats] = useState<any>(null);
   const [sites, setSites] = useState<Site[]>([]);
   const [aspirations, setAspirations] = useState<Aspirasi[]>([]);
-  const [activeTab, setActiveTab] = useState<'sites' | 'aspirasi' | 'ai_settings' | 'party_info'>('sites');
+  const [sentimentIssues, setSentimentIssues] = useState<SentimentIssue[]>([]);
+  const [activeTab, setActiveTab] = useState<'sites' | 'sentimen' | 'aspirasi' | 'ai_settings' | 'party_info'>('sites');
+  const [copiedIssueId, setCopiedIssueId] = useState<string | null>(null);
   const [showWizard, setShowWizard] = useState(false);
   const [loading, setLoading] = useState(true);
 
@@ -38,23 +45,26 @@ export const SuperAdminOverview: React.FC = () => {
   const fetchData = async () => {
     setLoading(true);
     try {
-      const [statsRes, sitesRes, aspRes, aiRes] = await Promise.all([
+      const [statsRes, sitesRes, aspRes, aiRes, issuesRes] = await Promise.all([
         fetch('/api/stats'),
         fetch('/api/sites'),
         fetch('/api/aspirasi'),
         fetch('/api/ai/settings'),
+        fetch('/api/sentiment/issues'),
       ]);
 
-      const [statsData, sitesData, aspData, aiData] = await Promise.all([
+      const [statsData, sitesData, aspData, aiData, issuesData] = await Promise.all([
         statsRes.json(),
         sitesRes.json(),
         aspRes.json(),
         aiRes.json(),
+        issuesRes.json(),
       ]);
 
       setStats(statsData.stats);
       setSites(sitesData.sites || []);
       setAspirations(aspData.aspirasi || []);
+      setSentimentIssues(issuesData.issues || []);
 
       if (aiData.settings) {
         setAiTone(aiData.settings.tone || '');
@@ -194,6 +204,17 @@ export const SuperAdminOverview: React.FC = () => {
           Daftar Situs Kader ({sites.length})
         </button>
         <button
+          onClick={() => setActiveTab('sentimen')}
+          className={`px-4 py-2 rounded-xl transition-all flex items-center gap-1.5 ${
+            activeTab === 'sentimen'
+              ? 'bg-[#C9A33D] text-[#17171A] font-bold shadow'
+              : 'text-[#F0ECE2]/70 hover:text-white hover:bg-white/5'
+          }`}
+        >
+          <Flame className="w-3.5 h-3.5 text-amber-400" />
+          <span>Radar Isu Elang Sentimen ({sentimentIssues.length})</span>
+        </button>
+        <button
           onClick={() => setActiveTab('aspirasi')}
           className={`px-4 py-2 rounded-xl transition-all ${
             activeTab === 'aspirasi'
@@ -281,6 +302,185 @@ export const SuperAdminOverview: React.FC = () => {
                 ))}
               </tbody>
             </table>
+          </div>
+        </div>
+      )}
+
+      {/* Tab: Radar Elang Sentimen */}
+      {activeTab === 'sentimen' && (
+        <div className="space-y-6">
+          <div className="bg-[#1E1E24] p-6 rounded-3xl border border-[#C9A33D]/30 shadow-xl space-y-4 relative overflow-hidden">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div className="space-y-1">
+                <div className="inline-flex items-center gap-2 px-3 py-1 bg-amber-500/10 text-amber-400 border border-amber-500/30 rounded-full text-xs font-mono font-semibold uppercase">
+                  <Flame className="w-3.5 h-3.5 text-amber-400 animate-pulse" />
+                  Sikronisasi Real-Time Elang Sentimen
+                </div>
+                <h3 className="font-display font-black text-xl sm:text-2xl text-white">
+                  Radar Isu Publik & Panduan Narasi Kebijakan
+                </h3>
+                <p className="text-xs text-[#F0ECE2]/70 max-w-2xl leading-relaxed">
+                  Gunakan isu-isu hasil penelusuran <strong>Elang Sentimen</strong> berikut ini sebagai arahan resmi bagi admin dan kader dalam menyusun artikel berita, opini, dan rilis pers, sehingga respons partai senantiasa sinkron dengan denyut aspirasi masyarakat.
+                </p>
+              </div>
+
+              <button
+                type="button"
+                onClick={fetchData}
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-white text-xs border border-white/10 transition self-start sm:self-auto font-semibold"
+              >
+                <RefreshCw className="w-3.5 h-3.5" />
+                <span>Segarkan Radar</span>
+              </button>
+            </div>
+
+            {/* Quick Metrics Bar */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
+              <div className="bg-[#17171A] p-3.5 rounded-xl border border-white/10 space-y-1">
+                <span className="text-[10px] text-[#F0ECE2]/50 font-mono uppercase">Total Isu Aktif</span>
+                <p className="font-display font-black text-xl text-white">{sentimentIssues.length}</p>
+              </div>
+              <div className="bg-[#17171A] p-3.5 rounded-xl border border-white/10 space-y-1">
+                <span className="text-[10px] text-rose-400/80 font-mono uppercase">Sentimen Kritis/Negatif</span>
+                <p className="font-display font-black text-xl text-rose-400">
+                  {sentimentIssues.filter((i) => i.dominant_sentiment === 'negatif').length} Isu
+                </p>
+              </div>
+              <div className="bg-[#17171A] p-3.5 rounded-xl border border-white/10 space-y-1">
+                <span className="text-[10px] text-emerald-400/80 font-mono uppercase">Sentimen Positif</span>
+                <p className="font-display font-black text-xl text-emerald-400">
+                  {sentimentIssues.filter((i) => i.dominant_sentiment === 'positif').length} Isu
+                </p>
+              </div>
+              <div className="bg-[#17171A] p-3.5 rounded-xl border border-white/10 space-y-1">
+                <span className="text-[10px] text-[#C9A33D] font-mono uppercase">Status Integrasi</span>
+                <p className="font-display font-bold text-xs text-emerald-400 flex items-center gap-1 pt-1">
+                  <CheckCircle className="w-3.5 h-3.5" /> Terhubung Langsung
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* List of Sentiment Issues */}
+          <div className="grid grid-cols-1 gap-4">
+            {sentimentIssues.map((issue) => {
+              const isNegative = issue.dominant_sentiment === 'negatif';
+              const isPositive = issue.dominant_sentiment === 'positif';
+              const isCopied = copiedIssueId === issue.id;
+
+              return (
+                <div
+                  key={issue.id}
+                  className="bg-[#1E1E24] p-5 sm:p-6 rounded-2xl border border-white/10 hover:border-white/20 transition-all space-y-4 shadow-xl"
+                >
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-white/5 pb-3">
+                    <div className="flex flex-wrap items-center gap-2 text-[10px] font-mono">
+                      <span
+                        className={`px-2.5 py-0.5 rounded-full border font-semibold ${
+                          isNegative
+                            ? 'bg-rose-500/10 text-rose-400 border-rose-500/30'
+                            : isPositive
+                            ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30'
+                            : 'bg-amber-500/10 text-amber-400 border-amber-500/30'
+                        }`}
+                      >
+                        {isNegative
+                          ? 'Sentimen Kritis / Perlu Respon Cepat'
+                          : isPositive
+                          ? 'Sentimen Positif / Peluang Penguatan'
+                          : 'Sentimen Beragam / Dinamis'}
+                      </span>
+                      <span className="text-[#C9A33D] bg-[#C9A33D]/10 px-2 py-0.5 rounded-full border border-[#C9A33D]/20 font-bold">
+                        🔥 {issue.burst_ratio}x Lonjakan Tren
+                      </span>
+                      <span className="text-[#F0ECE2]/50 bg-white/5 px-2 py-0.5 rounded-full">
+                        {issue.mention_count} percakapan publik
+                      </span>
+                      <span className="text-[#F0ECE2]/40">Wilayah: {issue.region}</span>
+                    </div>
+
+                    <span className="text-[10px] text-[#F0ECE2]/40 font-mono">
+                      Tanggal: {issue.date}
+                    </span>
+                  </div>
+
+                  <div className="space-y-2">
+                    <h4 className="font-display font-black text-lg sm:text-xl text-white">
+                      {issue.topic}
+                    </h4>
+                    <p className="text-xs text-[#F0ECE2]/80 leading-relaxed bg-[#17171A] p-3.5 rounded-xl border border-white/5">
+                      <strong>Sorotan Polemik:</strong> {issue.summary}
+                    </p>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                    {/* Recommended Angle */}
+                    <div className="bg-[#17171A] p-4 rounded-xl border border-[#C9A33D]/20 space-y-2">
+                      <span className="text-[10px] font-mono uppercase tracking-wider text-[#C9A33D] font-bold flex items-center gap-1.5">
+                        <Shield className="w-3.5 h-3.5" />
+                        Rekomendasi Sudut Pandang Partai Elang
+                      </span>
+                      <p className="text-xs text-[#F0ECE2]/90 leading-relaxed">
+                        {issue.recommended_angle}
+                      </p>
+                    </div>
+
+                    {/* Suggested Points */}
+                    <div className="bg-[#17171A] p-4 rounded-xl border border-white/10 space-y-2">
+                      <span className="text-[10px] font-mono uppercase tracking-wider text-emerald-400 font-bold flex items-center gap-1.5">
+                        <CheckCircle className="w-3.5 h-3.5" />
+                        Poin Sikap Resmi (Siap Diadopsi Kader)
+                      </span>
+                      <ul className="space-y-1.5 text-[11px] text-[#F0ECE2]/80 list-disc list-inside">
+                        {issue.suggested_points.map((pt, idx) => (
+                          <li key={idx} className="leading-relaxed">
+                            {pt}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+
+                  {/* Actions */}
+                  <div className="pt-3 border-t border-white/5 flex flex-wrap items-center justify-between gap-3">
+                    <div className="flex items-center gap-2 text-[11px] text-[#F0ECE2]/50">
+                      <span>Sampel Media:</span>
+                      <span className="text-white italic truncate max-w-md">
+                        {issue.sample_headlines[0] || 'Liputan Media Nasional'}
+                      </span>
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          navigator.clipboard.writeText(
+                            `SIKAP RESMI PARTAI ELANG TERKAIT ${issue.topic.toUpperCase()}\n\n` +
+                              issue.suggested_points.map((p, i) => `${i + 1}. ${p}`).join('\n')
+                          );
+                          setCopiedIssueId(issue.id);
+                          setTimeout(() => setCopiedIssueId(null), 3000);
+                        }}
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-white text-xs border border-white/10 transition font-medium"
+                      >
+                        <Copy className="w-3.5 h-3.5 text-[#C9A33D]" />
+                        <span>{isCopied ? '✓ Poin Tersalin!' : 'Salin Poin Sikap'}</span>
+                      </button>
+
+                      {sites.length > 0 && (
+                        <Link
+                          href={`/dashboard/${sites[0].slug}`}
+                          className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-xl bg-[#C9A33D] hover:bg-amber-500 text-[#17171A] text-xs font-bold transition shadow-md shadow-[#C9A33D]/20"
+                        >
+                          <Sparkles className="w-3.5 h-3.5" />
+                          <span>Tulis di CMS Kader ({sites[0].nama_anggota})</span>
+                        </Link>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       )}
