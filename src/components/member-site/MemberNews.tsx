@@ -42,19 +42,17 @@ export const MemberNewsSection: React.FC<MemberNewsProps> = ({ news, memberName 
             onClick={() => setSelectedNews(mainPost)}
             className="lg:col-span-7 bg-[#17171A] rounded-2xl border border-white/10 overflow-hidden group cursor-pointer hover:border-[#C9A33D]/60 transition-all shadow-xl"
           >
-            {mainPost.cover_image_url && (
-              <div className="relative h-64 sm:h-80 w-full overflow-hidden">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={mainPost.cover_image_url}
-                  alt={mainPost.judul}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                />
-                <span className="absolute top-4 left-4 bg-[#8A2E22] text-white text-[10px] font-mono font-bold uppercase px-3 py-1 rounded shadow">
-                  {mainPost.kategori}
-                </span>
-              </div>
-            )}
+            <div className="relative h-64 sm:h-80 w-full overflow-hidden">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={mainPost.cover_image_url || '/images/articles/aspirasi-pesisir.webp'}
+                alt={mainPost.judul}
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              />
+              <span className="absolute top-4 left-4 bg-[#8A2E22] text-white text-[10px] font-mono font-bold uppercase px-3 py-1 rounded shadow">
+                {mainPost.kategori}
+              </span>
+            </div>
             <div className="p-6 space-y-3">
               <div className="flex items-center gap-4 text-[11px] text-[#F0ECE2]/50 font-mono">
                 <span className="flex items-center gap-1">
@@ -94,16 +92,14 @@ export const MemberNewsSection: React.FC<MemberNewsProps> = ({ news, memberName 
                 onClick={() => setSelectedNews(post)}
                 className="bg-[#17171A] p-4 rounded-xl border border-white/10 hover:border-[#C9A33D]/50 transition-colors cursor-pointer flex gap-4 group"
               >
-                {post.cover_image_url && (
-                  <div className="w-24 h-24 rounded-lg overflow-hidden shrink-0 bg-white/5">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={post.cover_image_url}
-                      alt={post.judul}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform"
-                    />
-                  </div>
-                )}
+                <div className="w-24 h-24 rounded-lg overflow-hidden shrink-0 bg-white/5">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={post.cover_image_url || '/images/articles/aspirasi-pesisir.webp'}
+                    alt={post.judul}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                  />
+                </div>
                 <div className="space-y-1.5 flex-1 min-w-0">
                   <span className="text-[10px] font-mono text-[#C9A33D] uppercase">
                     {post.kategori}
@@ -136,16 +132,14 @@ export const MemberNewsSection: React.FC<MemberNewsProps> = ({ news, memberName 
               <X className="w-5 h-5" />
             </button>
 
-            {selectedNews.cover_image_url && (
-              <div className="rounded-xl overflow-hidden h-64 w-full">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={selectedNews.cover_image_url}
-                  alt={selectedNews.judul}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-            )}
+            <div className="rounded-xl overflow-hidden h-64 w-full">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={selectedNews.cover_image_url || '/images/articles/aspirasi-pesisir.webp'}
+                alt={selectedNews.judul}
+                className="w-full h-full object-cover"
+              />
+            </div>
 
             <div className="space-y-2">
               <span className="text-xs font-mono uppercase bg-[#C9A33D]/20 text-[#C9A33D] px-2 py-0.5 rounded">

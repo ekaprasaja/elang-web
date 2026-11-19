@@ -61,7 +61,7 @@ export const ewRepository = {
       custom_domain: siteData.custom_domain || null,
       tema_aksen: siteData.tema_aksen || '#C9A33D',
       logo_url: siteData.logo_url || null,
-      foto_resmi_url: siteData.foto_resmi_url || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=800',
+      foto_resmi_url: siteData.foto_resmi_url || '/images/profiles/arya-pratama.webp',
       tagline: siteData.tagline || 'Mengabdi untuk Kedaulatan Rakyat & Daerah Pesisir',
       status: 'ACTIVE',
       created_at: new Date().toISOString(),
@@ -252,6 +252,21 @@ export const ewRepository = {
     const id = news.id || `news-${Date.now()}`;
     const slug = news.slug || news.judul?.toLowerCase().replace(/[^a-z0-9]/g, '-') || `news-${Date.now()}`;
     
+    // Determine intelligent default Indonesian thumbnail if none provided
+    let coverUrl = news.cover_image_url;
+    if (!coverUrl) {
+      const text = `${news.judul || ''} ${news.kategori || ''}`.toLowerCase();
+      if (text.includes('solar') || text.includes('nelayan') || text.includes('maritim') || text.includes('laut') || text.includes('pesisir')) {
+        coverUrl = '/images/articles/solar-subsidi-nelayan.webp';
+      } else if (text.includes('umkm') || text.includes('pasar') || text.includes('ekonomi') || text.includes('usaha') || text.includes('halal')) {
+        coverUrl = '/images/articles/umkm-pelatihan.webp';
+      } else if (text.includes('guru') || text.includes('pendidikan') || text.includes('sekolah') || text.includes('paud')) {
+        coverUrl = '/images/articles/pendidikan-guru.webp';
+      } else {
+        coverUrl = '/images/articles/aspirasi-pesisir.webp';
+      }
+    }
+
     await supabaseAdmin.from('ew_news_posts').upsert([{
       id,
       site_id: news.site_id,
@@ -259,7 +274,7 @@ export const ewRepository = {
       slug,
       ringkasan: news.ringkasan,
       isi: news.isi,
-      cover_image_url: news.cover_image_url,
+      cover_image_url: coverUrl,
       kategori: news.kategori || 'Kegiatan Lapangan',
       status: news.status || 'published',
       views_count: news.views_count || 0,

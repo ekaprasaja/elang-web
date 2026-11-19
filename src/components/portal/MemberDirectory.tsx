@@ -73,7 +73,7 @@ export const MemberDirectory: React.FC<MemberDirectoryProps> = ({ sites }) => {
               <div className="relative h-64 w-full overflow-hidden bg-black/40">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src={site.foto_resmi_url || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800'}
+                  src={site.foto_resmi_url || '/images/profiles/arya-pratama.webp'}
                   alt={site.nama_anggota}
                   className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
                 />

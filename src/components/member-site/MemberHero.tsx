@@ -87,7 +87,7 @@ export const MemberHero: React.FC<MemberHeroProps> = ({ site, profile }) => {
               <div className="relative rounded-2xl overflow-hidden border-2 border-[#C9A33D]/60 bg-[#1E1E24] shadow-2xl">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src={site.foto_resmi_url || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800'}
+                  src={site.foto_resmi_url || '/images/profiles/arya-pratama.webp'}
                   alt={site.nama_anggota}
                   className="w-full h-[420px] object-cover object-top hover:scale-105 transition-transform duration-700"
                 />

@@ -57,7 +57,7 @@ export const SiteWizardModal: React.FC<SiteWizardModalProps> = ({ isOpen, onClos
           nomor_urut: Number(nomorUrut),
           tagline,
           tema_aksen: temaAksen,
-          foto_resmi_url: fotoUrl || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=800',
+          foto_resmi_url: fotoUrl || '/images/profiles/arya-pratama.webp',
         }),
       });
 

@@ -43,7 +43,7 @@ export const MemberTestimonialsSection: React.FC<MemberTestimonialsProps> = ({ t
                   <div className="w-11 h-11 rounded-full overflow-hidden bg-white/10 shrink-0 border border-[#C9A33D]/40">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
-                      src={t.foto_url}
+                      src={t.foto_url || '/images/testimonials/pak-rusli.webp'}
                       alt={t.nama}
                       className="w-full h-full object-cover"
                     />
