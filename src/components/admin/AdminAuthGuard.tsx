@@ -96,8 +96,10 @@ export const AdminAuthGuard: React.FC<AdminAuthGuardProps> = ({
               <Shield className="w-3.5 h-3.5 text-amber-400" />
               <span>Sistem Resmi Partai Elang Indonesia</span>
             </div>
-            <h2 className="font-display font-black text-xl sm:text-2xl text-white tracking-tight">{title}</h2>
-            <p className="text-xs text-[#F0ECE2]/60 mt-1 max-w-sm">{subtitle}</p>
+            <h1 className="text-2xl font-black text-white tracking-tight">ELANG WEB</h1>
+            <p className="text-xs text-slate-400 mt-1 max-w-xs mx-auto leading-relaxed">
+              Portal Manajemen Website Kader &amp; Landing Page Resmi Partai Elang Indonesia.
+            </p>
           </div>
 
           <form onSubmit={handleLogin} className="space-y-4">
