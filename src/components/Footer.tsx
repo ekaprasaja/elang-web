@@ -45,9 +45,9 @@ export const Footer: React.FC = () => {
               </Link>
             </li>
             <li>
-              <Link href="/admin" className="hover:text-white transition-colors">
-                Dashboard Super Admin Pusat
-              </Link>
+              <a href="https://member.incodegen.com" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">
+                Portal KTA & Keanggotaan
+              </a>
             </li>
             <li>
               <a href="https://partaielang.id/about" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors flex items-center gap-1.5">

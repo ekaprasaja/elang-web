@@ -37,18 +37,20 @@ export default async function HomePage() {
           </div>
 
           <div className="flex flex-wrap items-center gap-3 pt-2">
-            <Link
-              href="/admin"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-[#C9A33D] hover:bg-amber-500 text-[#17171A] font-bold text-xs uppercase tracking-wider rounded-xl shadow-lg shadow-[#C9A33D]/20 transition-all"
-            >
-              <Sparkles className="w-4 h-4" />
-              <span>Kelola di Super Admin</span>
-            </Link>
             <a
               href="#direktori"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-[#C9A33D] hover:bg-amber-500 text-[#17171A] font-bold text-xs uppercase tracking-wider rounded-xl shadow-lg shadow-[#C9A33D]/20 transition-all"
+            >
+              <Users className="w-4 h-4" />
+              <span>Jelajahi Profil Kader ({sites.length})</span>
+            </a>
+            <a
+              href="https://member.incodegen.com"
+              target="_blank"
+              rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-5 py-3 bg-white/5 hover:bg-white/10 text-white font-semibold text-xs rounded-xl border border-white/15 transition-all"
             >
-              <span>Telusuri Website Kader ({sites.length})</span>
+              <span>Gabung Jadi Kader</span>
               <ArrowRight className="w-3.5 h-3.5 text-[#C9A33D]" />
             </a>
           </div>
