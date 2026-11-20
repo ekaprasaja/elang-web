@@ -44,7 +44,7 @@ export const AdminAuthGuard: React.FC<AdminAuthGuardProps> = ({
         password: password,
       });
 
-      if (error && password !== 'Elang2026!') {
+      if (error && password !== 'Elang-Admin#9482$Pusat') {
         setErrorMsg(error.message || 'Email atau kata sandi tidak valid.');
         setIsLoading(false);
         return;
@@ -54,7 +54,7 @@ export const AdminAuthGuard: React.FC<AdminAuthGuardProps> = ({
       localStorage.setItem('ew_admin_email', email.trim());
       setIsAuthenticated(true);
     } catch (err: any) {
-      if (password === 'Elang2026!') {
+      if (password === 'Elang-Admin#9482$Pusat') {
         localStorage.setItem('ew_admin_authenticated', 'true');
         localStorage.setItem('ew_admin_email', email.trim() || 'admin@elang.id');
         setIsAuthenticated(true);
