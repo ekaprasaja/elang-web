@@ -39,14 +39,16 @@ export const AdminAuthGuard: React.FC<AdminAuthGuardProps> = ({
     setIsLoading(true);
 
     try {
-      // Authenticate with Supabase Auth
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email: email.trim(),
-        password: password,
+      // 1. Verifikasi izin melalui endpoint SSO Terpusat
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email.trim(), password }),
       });
 
-      if (error) {
-        setErrorMsg(error.message || 'Email atau kata sandi tidak valid.');
+      const data = await res.json();
+      if (!res.ok) {
+        setErrorMsg(data.error || 'Email atau kata sandi tidak valid.');
         setIsLoading(false);
         return;
       }
