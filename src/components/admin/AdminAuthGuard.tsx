@@ -52,6 +52,7 @@ export const AdminAuthGuard: React.FC<AdminAuthGuardProps> = ({
 
       localStorage.setItem('ew_admin_authenticated', 'true');
       localStorage.setItem('ew_admin_email', email.trim());
+      document.cookie = 'ew_admin_session=authenticated; Path=/; SameSite=Lax; Max-Age=86400; Secure';
       setIsAuthenticated(true);
     } catch (err: any) {
       setErrorMsg('Terjadi kesalahan otentikasi. Silakan coba lagi.');
@@ -63,6 +64,7 @@ export const AdminAuthGuard: React.FC<AdminAuthGuardProps> = ({
   const handleLogout = () => {
     localStorage.removeItem('ew_admin_authenticated');
     localStorage.removeItem('ew_admin_email');
+    document.cookie = 'ew_admin_session=; Path=/; Max-Age=0; SameSite=Lax; Secure';
     setIsAuthenticated(false);
   };
 
