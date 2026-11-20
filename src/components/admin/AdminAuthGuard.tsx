@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
-import { Shield, Lock, Mail, AlertCircle, LogOut } from 'lucide-react';
+import { Shield, Lock, Mail, AlertCircle, LogOut, Eye, EyeOff } from 'lucide-react';
 import Link from 'next/link';
 
 interface AdminAuthGuardProps {
@@ -19,6 +19,7 @@ export const AdminAuthGuard: React.FC<AdminAuthGuardProps> = ({
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -80,12 +81,21 @@ export const AdminAuthGuard: React.FC<AdminAuthGuardProps> = ({
     return (
       <div className="min-h-[80vh] flex items-center justify-center p-4">
         <div className="max-w-md w-full bg-[#1E1E24] border border-white/10 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6">
-          <div className="text-center space-y-2">
-            <div className="w-14 h-14 mx-auto rounded-2xl bg-[#8A2E22]/20 border border-[#8A2E22]/40 flex items-center justify-center text-[#E87361] shadow-xl">
-              <Shield className="w-7 h-7" />
+          <div className="flex flex-col items-center text-center mb-6">
+            <div className="w-16 h-16 rounded-2xl bg-slate-900/90 border border-amber-500/30 p-2.5 mx-auto flex items-center justify-center shadow-xl shadow-black/50 mb-3 hover:border-amber-400/50 transition">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/logo-transparent.webp"
+                alt="Logo Partai Elang"
+                className="w-full h-full object-contain drop-shadow"
+              />
             </div>
-            <h2 className="font-display font-black text-xl sm:text-2xl text-white">{title}</h2>
-            <p className="text-xs text-[#F0ECE2]/60">{subtitle}</p>
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/25 text-[11px] font-semibold text-amber-300 mb-2.5 shadow-sm">
+              <Shield className="w-3.5 h-3.5 text-amber-400" />
+              <span>Sistem Resmi Partai Elang Indonesia</span>
+            </div>
+            <h2 className="font-display font-black text-xl sm:text-2xl text-white tracking-tight">{title}</h2>
+            <p className="text-xs text-[#F0ECE2]/60 mt-1 max-w-sm">{subtitle}</p>
           </div>
 
           <form onSubmit={handleLogin} className="space-y-4">
@@ -116,13 +126,21 @@ export const AdminAuthGuard: React.FC<AdminAuthGuardProps> = ({
               <div className="relative">
                 <Lock className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-white/40" />
                 <input
-                  type="password"
+                  type={showPassword ? 'text' : 'password'}
                   required
                   placeholder="••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full bg-[#17171A] border border-white/10 rounded-xl py-2.5 pl-10 pr-3 text-xs text-white placeholder-white/20 focus:outline-none focus:border-[#C9A33D]"
+                  className="w-full bg-[#17171A] border border-white/10 rounded-xl py-2.5 pl-10 pr-10 text-xs text-white placeholder-white/20 focus:outline-none focus:border-[#C9A33D]"
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-white/40 hover:text-white transition"
+                  title={showPassword ? 'Sembunyikan kata sandi' : 'Tampilkan kata sandi'}
+                >
+                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
               </div>
             </div>
 
