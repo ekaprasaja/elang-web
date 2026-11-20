@@ -38,13 +38,13 @@ export const AdminAuthGuard: React.FC<AdminAuthGuardProps> = ({
     setIsLoading(true);
 
     try {
-      // Authenticate with Supabase Auth or master credentials
+      // Authenticate with Supabase Auth
       const { data, error } = await supabase.auth.signInWithPassword({
         email: email.trim(),
         password: password,
       });
 
-      if (error && password !== 'Elang-Admin#9482$Pusat') {
+      if (error) {
         setErrorMsg(error.message || 'Email atau kata sandi tidak valid.');
         setIsLoading(false);
         return;
@@ -54,13 +54,7 @@ export const AdminAuthGuard: React.FC<AdminAuthGuardProps> = ({
       localStorage.setItem('ew_admin_email', email.trim());
       setIsAuthenticated(true);
     } catch (err: any) {
-      if (password === 'Elang-Admin#9482$Pusat') {
-        localStorage.setItem('ew_admin_authenticated', 'true');
-        localStorage.setItem('ew_admin_email', email.trim() || 'admin@elang.id');
-        setIsAuthenticated(true);
-      } else {
-        setErrorMsg('Terjadi kesalahan otentikasi. Silakan coba lagi.');
-      }
+      setErrorMsg('Terjadi kesalahan otentikasi. Silakan coba lagi.');
     } finally {
       setIsLoading(false);
     }
