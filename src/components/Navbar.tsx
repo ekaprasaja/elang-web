@@ -5,25 +5,18 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useCMS } from '@/context/CMSContext';
 import {
-  Compass,
   Users,
-  Shield,
-  Layers,
   ChevronDown,
-  Sparkles,
   ExternalLink,
-  Edit3,
 } from 'lucide-react';
 
 export const Navbar: React.FC = () => {
   const pathname = usePathname();
-  const { sites, activeSite, currentRole, setCurrentRole, notification } = useCMS();
+  const { sites, notification } = useCMS();
   const [showSitesMenu, setShowSitesMenu] = useState(false);
-  const [showRoleMenu, setShowRoleMenu] = useState(false);
 
   const isPortal = pathname === '/';
-  const isAdmin = pathname.startsWith('/admin');
-  const isDashboard = pathname.startsWith('/dashboard');
+  const isAdmin = pathname.startsWith('/admin') || pathname.startsWith('/dashboard');
 
   return (
     <header className="sticky top-0 z-50 bg-[#17171A]/95 backdrop-blur-md border-b border-white/10 px-4 py-3">
@@ -49,8 +42,8 @@ export const Navbar: React.FC = () => {
           </Link>
         </div>
 
-        {/* Center / Navigation Links */}
-        <nav className="hidden md:flex items-center gap-1.5 text-xs font-medium">
+        {/* Center / Navigation Links for Public View */}
+        <nav className="hidden md:flex items-center gap-2 text-xs font-medium">
           <Link
             href="/"
             className={`px-3 py-1.5 rounded-lg transition-colors ${
@@ -99,89 +92,29 @@ export const Navbar: React.FC = () => {
               </div>
             )}
           </div>
-
-          <Link
-            href="/admin"
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-colors ${
-              isAdmin
-                ? 'bg-[#C9A33D] text-[#17171A] font-bold shadow-md shadow-[#C9A33D]/20'
-                : 'text-[#C9A33D] hover:bg-[#C9A33D]/10'
-            }`}
-          >
-            <Shield className="w-3.5 h-3.5" />
-            <span>Super Admin Pusat</span>
-          </Link>
         </nav>
 
-        {/* Right: Quick Role Switcher / Demo Controls */}
+        {/* Right: Public Link to Member Portal or Clean View */}
         <div className="flex items-center gap-2">
-          {/* Active Site quick link to dashboard if looking at a member site */}
-          {activeSite && !isPortal && !isAdmin && (
+          {isAdmin ? (
             <Link
-              href={`/dashboard/${activeSite.slug}`}
-              className="flex items-center gap-1.5 px-2.5 py-1.5 bg-[#C9A33D]/10 hover:bg-[#C9A33D]/20 text-[#C9A33D] border border-[#C9A33D]/30 rounded-lg text-xs font-semibold transition-all"
+              href="/"
+              className="flex items-center gap-1.5 px-3 py-1.5 bg-white/5 hover:bg-white/10 text-[#F0ECE2]/80 border border-white/10 rounded-lg text-xs font-medium transition-all"
             >
-              <Edit3 className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">CMS Kader</span>
+              <span>Lihat Web Publik</span>
             </Link>
-          )}
-
-          {/* Role selector dropdown */}
-          <div className="relative">
-            <button
-              onClick={() => setShowRoleMenu(!showRoleMenu)}
-              className="flex items-center gap-1.5 px-2.5 py-1.5 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg text-xs text-white transition-colors"
+          ) : (
+            <a
+              href="https://member.incodegen.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 px-3 py-1.5 bg-[#C9A33D]/10 hover:bg-[#C9A33D]/20 text-[#C9A33D] border border-[#C9A33D]/30 rounded-lg text-xs font-semibold transition-all"
             >
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-              <span className="capitalize font-mono text-[11px] text-[#F0ECE2]/80">
-                {currentRole === 'super_admin'
-                  ? 'Super Admin'
-                  : currentRole === 'admin_situs'
-                  ? 'Admin Kader'
-                  : 'Mode Publik'}
-              </span>
-              <ChevronDown className="w-3 h-3 text-white/50" />
-            </button>
-
-            {showRoleMenu && (
-              <div className="absolute right-0 mt-2 w-48 bg-[#1E1E24] border border-white/10 rounded-xl shadow-2xl p-1.5 z-50">
-                <div className="text-[10px] text-[#F0ECE2]/50 px-2 py-1 uppercase font-mono">Ganti Mode Akses:</div>
-                <button
-                  onClick={() => {
-                    setCurrentRole('publik');
-                    setShowRoleMenu(false);
-                  }}
-                  className={`w-full text-left px-2.5 py-1.5 rounded-lg text-xs flex items-center justify-between ${
-                    currentRole === 'publik' ? 'bg-white/10 text-[#C9A33D] font-bold' : 'text-[#F0ECE2]/80 hover:bg-white/5'
-                  }`}
-                >
-                  <span>Pengunjung Publik</span>
-                </button>
-                <button
-                  onClick={() => {
-                    setCurrentRole('admin_situs');
-                    setShowRoleMenu(false);
-                  }}
-                  className={`w-full text-left px-2.5 py-1.5 rounded-lg text-xs flex items-center justify-between ${
-                    currentRole === 'admin_situs' ? 'bg-white/10 text-[#C9A33D] font-bold' : 'text-[#F0ECE2]/80 hover:bg-white/5'
-                  }`}
-                >
-                  <span>Admin Situs Kader</span>
-                </button>
-                <button
-                  onClick={() => {
-                    setCurrentRole('super_admin');
-                    setShowRoleMenu(false);
-                  }}
-                  className={`w-full text-left px-2.5 py-1.5 rounded-lg text-xs flex items-center justify-between ${
-                    currentRole === 'super_admin' ? 'bg-white/10 text-[#C9A33D] font-bold' : 'text-[#F0ECE2]/80 hover:bg-white/5'
-                  }`}
-                >
-                  <span>Super Admin Pusat</span>
-                </button>
-              </div>
-            )}
-          </div>
+              <Users className="w-3.5 h-3.5" />
+              <span>Portal Kader</span>
+              <ExternalLink className="w-3 h-3 text-[#C9A33D]/70" />
+            </a>
+          )}
         </div>
       </div>
 

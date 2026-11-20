@@ -1,5 +1,6 @@
 import React from 'react';
 import { MemberSiteEditor } from '@/components/dashboard/MemberSiteEditor';
+import { AdminAuthGuard } from '@/components/admin/AdminAuthGuard';
 
 export default async function MemberDashboardPage({
   params,
@@ -9,7 +10,12 @@ export default async function MemberDashboardPage({
   const { slug } = await params;
   return (
     <div className="w-full">
-      <MemberSiteEditor slug={slug} />
+      <AdminAuthGuard
+        title="CMS Laman Kader"
+        subtitle={`Login pengurus/tim sukses untuk mengelola konten laman resmi ${slug}.`}
+      >
+        <MemberSiteEditor slug={slug} />
+      </AdminAuthGuard>
     </div>
   );
 }
